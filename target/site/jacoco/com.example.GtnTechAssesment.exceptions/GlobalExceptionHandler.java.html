@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.example.GtnTechAssesment.exceptions</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.example.GtnTechAssesment.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+<span class="fc" id="L14">public class GlobalExceptionHandler {</span>
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity handleNotFound(ResourceNotFoundException ex){
+<span class="nc" id="L18">        Map&lt;String,Object&gt; error=new HashMap&lt;&gt;();</span>
+<span class="nc" id="L19">        error.put(&quot;timestamp&quot;, LocalDateTime.now().toString());</span>
+<span class="nc" id="L20">        error.put(&quot;status&quot;, HttpStatus.NOT_FOUND.value());</span>
+<span class="nc" id="L21">        error.put(&quot;error&quot;,&quot;Not Found&quot;);</span>
+<span class="nc" id="L22">        error.put(&quot;message&quot;,ex.getMessage());</span>
+<span class="nc" id="L23">        return new ResponseEntity&lt;&gt;(error,HttpStatus.NOT_FOUND);</span>
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity handleValidationErrors(MethodArgumentNotValidException ex){
+<span class="nc" id="L28">        Map&lt;String , Object&gt; error=new HashMap&lt;&gt;();</span>
+<span class="nc" id="L29">        Map&lt;String,String&gt; fieldErrors=new HashMap&lt;&gt;();</span>
+
+<span class="nc" id="L31">        ex.getBindingResult().getFieldErrors().forEach(err-&gt;</span>
+<span class="nc" id="L32">                fieldErrors.put(err.getField(),err.getDefaultMessage()));</span>
+
+<span class="nc" id="L34">        error.put(&quot;timestamp&quot;,LocalDateTime.now().toString());</span>
+<span class="nc" id="L35">        error.put(&quot;status&quot;,HttpStatus.BAD_REQUEST.value());</span>
+<span class="nc" id="L36">        error.put(&quot;error&quot;,&quot;Validation Failed&quot;);</span>
+<span class="nc" id="L37">        return new ResponseEntity(error,HttpStatus.BAD_REQUEST);</span>
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity handleGenericException(Exception ex){
+<span class="nc" id="L42">        Map&lt;String,Object&gt; error=new HashMap&lt;&gt;();</span>
+<span class="nc" id="L43">        error.put(&quot;timestamp&quot;,LocalDateTime.now().toString());</span>
+<span class="nc" id="L44">        error.put(&quot;status&quot;,HttpStatus.INTERNAL_SERVER_ERROR.value());</span>
+<span class="nc" id="L45">        error.put(&quot;error&quot;,&quot;Internal Server Error&quot;);</span>
+<span class="nc" id="L46">        error.put(&quot;message&quot;,ex.getMessage());</span>
+<span class="nc" id="L47">        return new ResponseEntity(error,HttpStatus.INTERNAL_SERVER_ERROR);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

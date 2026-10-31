@@ -1,0 +1,11 @@
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Controllers/HealthCheckController.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Controllers/TaskController.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Dto/TaskRequestDto.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Dto/TaskResponseDto.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Entity/Task.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Enum/TaskStatus.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/GtnTechAssesmentApplication.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Repo/TaskRepository.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/Service/TaskService.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/exceptions/GlobalExceptionHandler.java
+/Users/mohamedali/Desktop/GtnTechAssesment/src/main/java/com/example/GtnTechAssesment/exceptions/ResourceNotFoundException.java

@@ -1,0 +1,14 @@
+com/example/GtnTechAssesment/exceptions/ResourceNotFoundException.class
+com/example/GtnTechAssesment/GtnTechAssesmentApplication.class
+com/example/GtnTechAssesment/Enum/TaskStatus.class
+com/example/GtnTechAssesment/Dto/TaskRequestDto$TaskRequestDtoBuilder.class
+com/example/GtnTechAssesment/Dto/TaskRequestDto.class
+com/example/GtnTechAssesment/Dto/TaskResponseDto.class
+com/example/GtnTechAssesment/Dto/TaskResponseDto$TaskResponseDtoBuilder.class
+com/example/GtnTechAssesment/Entity/Task.class
+com/example/GtnTechAssesment/Service/TaskService.class
+com/example/GtnTechAssesment/Controllers/TaskController.class
+com/example/GtnTechAssesment/Repo/TaskRepository.class
+com/example/GtnTechAssesment/exceptions/GlobalExceptionHandler.class
+com/example/GtnTechAssesment/Controllers/HealthCheckController.class
+com/example/GtnTechAssesment/Entity/Task$TaskBuilder.class

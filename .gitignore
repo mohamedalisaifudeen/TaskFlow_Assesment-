@@ -1,0 +1,30 @@
+# macOS / System files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Java & Maven build outputs
+app/target/
+*.class
+*.jar
+*.war
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# Terraform cache & state files
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
+# Ansible temporary files
+*.retry
+.ansible/
+
+# Log files
+*.log
