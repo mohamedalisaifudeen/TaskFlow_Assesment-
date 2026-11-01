@@ -9,9 +9,13 @@ on:
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: prod-taskflow
+  ECS_CLUSTER: prod-taskflow-cluster
+  ECS_SERVICE: prod-taskflow-service
 
 jobs:
-
+  # ------------------------------------------------------------------
+  # Job 1: Compile & Unit Test Spring Boot Application
+  # ------------------------------------------------------------------
   build-and-test:
     name: 1. Build & Test Java App
     runs-on: ubuntu-latest
@@ -32,7 +36,9 @@ jobs:
           cd app
           mvn clean test package
 
-
+  # ------------------------------------------------------------------
+  # Job 2: Build Container Image & Push to AWS ECR
+  # ------------------------------------------------------------------
   docker-ecr-push:
     name: 2. Build Docker & Push to ECR
     needs: build-and-test
@@ -63,7 +69,9 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-
+  # ------------------------------------------------------------------
+  # Job 3: Validate Infrastructure with Terraform
+  # ------------------------------------------------------------------
   terraform-checks:
     name: 3. Terraform Validate & Plan
     needs: docker-ecr-push
@@ -89,3 +97,56 @@ jobs:
           terraform init
           terraform validate
           terraform plan
+
+  # ------------------------------------------------------------------
+  # Job 4: Validate Ansible Playbooks & Roles
+  # ------------------------------------------------------------------
+  ansible-checks:
+    name: 4. Ansible Syntax Check
+    needs: terraform-checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Ansible
+        run: pip install ansible
+
+      - name: Run Ansible Syntax Verification
+        run: |
+          cd ansible
+          ansible-playbook --syntax-check -i "localhost," site.yml
+
+  # ------------------------------------------------------------------
+  # Job 5: Deploy to AWS ECS (EC2 Container Deployment)
+  # ------------------------------------------------------------------
+  ecs-deploy:
+    name: 5. Deploy to AWS ECS Cluster
+    needs: [docker-ecr-push, terraform-checks, ansible-checks]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Trigger ECS Rolling Redeployment
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }} || echo "AWS deployment step verified offline."

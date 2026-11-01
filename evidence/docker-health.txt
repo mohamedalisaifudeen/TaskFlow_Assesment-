@@ -1,0 +1,15 @@
+=== DOCKER PS ===
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS                    PORTS                               NAMES
+5c49db1f7dc3   taskflow:v1.0.0   "java -jar app.jar"      22 minutes ago   Up 22 minutes (healthy)   0.0.0.0:8080->8080/tcp              taskflow-app
+4367af03950e   mysql:8.0         "docker-entrypoint.s…"   15 months ago    Up 23 minutes             0.0.0.0:3306->3306/tcp, 33060/tcp   mysql-db
+
+=== HEALTH ENDPOINT ===
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    15    0    15    0     0    169      0 --:--:-- --:--:-- --:--:--   170
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 01 Nov 2026 05:47:25 GMT
+
+{"status":"UP"}
